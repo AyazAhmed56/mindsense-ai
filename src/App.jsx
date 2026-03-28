@@ -5,12 +5,14 @@ import { supabase } from "./services/supabase";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-
+import Profile from "./pages/Profile";
+import BaselineTest from "./pages/BaselineTest";
+// import BehaviorTracking from "./pages/BehaviorTracking";
+import { CognitiveStateProvider } from "./context/CognitiveStateContext";
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔐 Check user session
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getUser();
@@ -20,11 +22,10 @@ function App() {
 
     getSession();
 
-    // Listen for auth changes
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user || null);
-      },
+      }
     );
 
     return () => {
@@ -37,9 +38,10 @@ function App() {
   }
 
   return (
+    <CognitiveStateProvider>
     <BrowserRouter>
       <Routes>
-        {/* 🔓 Public Routes */}
+        {/* Public Routes */}
         <Route
           path="/"
           element={user ? <Navigate to="/dashboard" /> : <Login />}
@@ -50,13 +52,35 @@ function App() {
           element={user ? <Navigate to="/dashboard" /> : <Signup />}
         />
 
-        {/* 🔒 Protected Route */}
+        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/" />}
         />
+
+        <Route
+          path="/profile"
+          element={user ? <Profile /> : <Navigate to="/" />}
+        />
+
+        <Route
+          path="/baseline-test"
+          element={user ? <BaselineTest /> : <Navigate to="/" />}
+        />
+
+        {/* <Route
+          path="/behavior-tracking"
+          element={user ? <BehaviorTracking /> : <Navigate to="/" />}
+        /> */}
+
+        {/* Fallback Route */}
+        <Route
+          path="*"
+          element={<Navigate to={user ? "/dashboard" : "/"} />}
+        />
       </Routes>
     </BrowserRouter>
+    </CognitiveStateProvider>
   );
 }
 
