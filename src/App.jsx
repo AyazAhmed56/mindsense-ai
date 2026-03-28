@@ -5,10 +5,13 @@ import { supabase } from "./services/supabase";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+
 import Profile from "./pages/Profile";
 import BaselineTest from "./pages/BaselineTest";
 // import BehaviorTracking from "./pages/BehaviorTracking";
 import { CognitiveStateProvider } from "./context/CognitiveStateContext";
+
+import Chatbot from "./pages/chatbot";
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +60,6 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/" />}
         />
-
         <Route
           path="/profile"
           element={user ? <Profile /> : <Navigate to="/" />}
@@ -78,6 +80,9 @@ function App() {
           path="*"
           element={<Navigate to={user ? "/dashboard" : "/"} />}
         />
+
+        <Route path="/chatbot" element={<Chatbot />} />
+
       </Routes>
     </BrowserRouter>
     </CognitiveStateProvider>
