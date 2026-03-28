@@ -5,6 +5,7 @@ import { supabase } from "./services/supabase";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Chatbot from "./pages/chatbot";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -55,6 +56,9 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/" />}
         />
+
+        <Route path="/chatbot" element={<Chatbot />} />
+
       </Routes>
     </BrowserRouter>
   );
